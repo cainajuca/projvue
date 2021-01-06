@@ -18,7 +18,7 @@
 
     <hr>
 
-    <div v-for="(cliente, index) in clientes" :key="cliente.id">
+    <div v-for="(cliente, index) in orderClientes" :key="cliente.id">
 
       <h4>cliente {{index+1}}</h4>
       <Cliente :cliente="cliente" @meDelete="deletarUsuario($event)"/>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+  import _ from 'lodash'; // para usar orderBy
   import Cliente from './components/Cliente'
   
 export default {
@@ -49,13 +50,15 @@ export default {
           id: 1,
           nome: "Cainã 1",
           email: "c1costa@gmail.com",
-          idade: 23
+          idade: 23,
+          showAge: false
         },
         {
           id: 2,
           nome: "Cainã 2",
           email: "c2costa@gmail.com",
-          idade: 32
+          idade: 32,
+          showAge: true
         }
       ]
     }
@@ -70,7 +73,6 @@ export default {
 
       if(this.nomeField == "" || this.nomeField.length < 3) {
         this.erroValidacao = true;
-        // console.log("Erro de validação.");
       } else {
         this.erroValidacao = false;
         this.clientes.push({nome: this.nomeField, email: this.emailField, idade: this.idadeField, id: Date.now()})  
@@ -81,14 +83,22 @@ export default {
       this.idadeField = "";
     },
     
+    isBigEnough: function(value) {
+      return value >= 10;
+    },
+
+
     deletarUsuario: function($event) {
       var id = $event.idCliente;
 
       // remover elemento do arrray pelo id
-      // var novoArray = this.clientes.filter(cliente => cliente.id != id);
-      // this.clientes = novoArray;
       this.clientes = this.clientes.filter(cliente => cliente.id != id);
+    }
+  },
 
+  computed: {
+    orderClientes: function() {
+      return _.orderBy(this.clientes,['nome'],['asc']);
     }
   }
 }

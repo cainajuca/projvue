@@ -9,12 +9,13 @@ html
         <!-- filtro processarEmail muda somente a exibição da variavel, nao seu conteudo -->
         <p>Email: {{cliente.email | processarEmail}}</p>
 
-        <p v-if="showIdade">Idade: {{cliente.idade}}</p>
+        <p v-if="cliente.showAge">Idade: {{cliente.idade}}</p>
         <p v-else>O usuário escondeu a idade.</p>
 
         <button @click="mudarCor()">Tornar Premium!</button>
         <button @click="emitirEventoDelete">Deletar</button>
 
+        <h4>Id especial: {{idEspecial}}</h4>
     </div>
 </template>
 
@@ -28,8 +29,7 @@ export default {
     },
 
     props: {
-        cliente: Object,
-        showIdade: Boolean
+        cliente: Object
     },
 
     methods: {
@@ -51,8 +51,13 @@ export default {
         processarEmail: function(value) {
             return value.toUpperCase();
         }
-    }
+    },
 
+    computed: {
+        idEspecial: function() {
+            return (this.cliente.email + this.cliente.nome + this.cliente.id).toUpperCase();
+        }
+    }
 
 }
 </script>
@@ -80,13 +85,3 @@ css
     }
 
 </style>
-
-
-
-codigos antigos (apagar?)
-
-<!-- data binding one-way -->
-<input type="text" :value="nome">
-
-<!-- data binding two-way -->
-<input type="text" v-model="descricao">
