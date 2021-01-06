@@ -1,19 +1,59 @@
-parece que oq fica fora dos escopos nao interefe em nada - vira comentario
-
 html
 <template>
-    <!-- um componente so pode ter uma tag raiz -->
-    <div id="cliente">
-        <h2>Cliente aqui!</h2>
-        <h3>Descrição do cliente: bla bla bla</h3>
+    <!-- classes condicionais aula 13 -->
+    <div :class="{'cliente': !isPremium, 'cliente-premium': isPremium}">
+
+        <h4>Nome: {{cliente.nome}}</h4>
         <hr>
+
+        <!-- filtro processarEmail muda somente a exibição da variavel, nao seu conteudo -->
+        <p>Email: {{cliente.email | processarEmail}}</p>
+
+        <p v-if="showIdade">Idade: {{cliente.idade}}</p>
+        <p v-else>O usuário escondeu a idade.</p>
+
+        <button @click="mudarCor()">Tornar Premium!</button>
+        <button @click="emitirEventoDelete">Deletar</button>
+
     </div>
 </template>
 
 javascript
 <script>
 export default {
-    
+    data() {
+        return {
+            isPremium: false
+        }
+    },
+
+    props: {
+        cliente: Object,
+        showIdade: Boolean
+    },
+
+    methods: {
+        mudarCor: function() {
+            this.isPremium = !this.isPremium;
+        },
+
+        emitirEventoDelete: function() {
+            this.$emit("meDelete", {idCliente: this.cliente.id, component: this});
+        },
+
+        testar: function() {
+            console.log("É só um teste, boy.");
+            alert("Isso é um alert!");
+        }
+    },
+
+    filters: {
+        processarEmail: function(value) {
+            return value.toUpperCase();
+        }
+    }
+
+
 }
 </script>
 
@@ -22,8 +62,31 @@ css
     h2 {
         color: brown;
     }
+
+    h4 {
+        margin-top: 2%;
+    }
     
-    #cliente {
+    .cliente {
+        padding: 2%;
+        background-color: #ECE5E3;
         color: blue;
     }
+
+    .cliente-premium {
+        padding: 2%;
+        background-color: #faf74d;
+        color: rgb(1, 1, 7);
+    }
+
 </style>
+
+
+
+codigos antigos (apagar?)
+
+<!-- data binding one-way -->
+<input type="text" :value="nome">
+
+<!-- data binding two-way -->
+<input type="text" v-model="descricao">

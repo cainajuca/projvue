@@ -1,23 +1,95 @@
+// para botar o servidor online: yarn run serve
+// video-aulas em
+// Curso de Vue JS
+// Victor Lima - Guia do Programador
+
 <template>
   <div id="app">
-    <h1>Guia Clientes</h1>
-    <Cliente/>
-    <Produto/>
-    <Cliente/>
-    <Produto/>
-    <Cliente/>
-    <Produto/>
+
+    <h3>Cadastro:</h3>
+
+    <small id="nomeErro" v-show="erroValidacao">O nome é inválido. Tente novamente.</small> <br>
+
+    <input type="text" placeholder="nome" v-model="nomeField"> <br>
+    <input type="email" placeholder="email" v-model="emailField"> <br>
+    <input type="number" placeholder="idade" v-model="idadeField">
+
+    <button @click="cadastrarUsuario">Cadastrar</button>
+
+    <hr>
+
+    <div v-for="(cliente, index) in clientes" :key="cliente.id">
+
+      <h4>cliente {{index+1}}</h4>
+      <Cliente :cliente="cliente" @meDelete="deletarUsuario($event)"/>
+      <hr>
+
+    </div>
+
   </div>
 </template>
 
 <script>
   import Cliente from './components/Cliente'
-  import Produto from './components/Produto'
+  
 export default {
   name: 'App',
+
+  data() {
+    return {
+
+      erroValidacao: false,
+
+      nomeField: "",
+      emailField: "",
+      idadeField: "",
+
+      clientes: [
+        {
+          id: 1,
+          nome: "Cainã 1",
+          email: "c1costa@gmail.com",
+          idade: 23
+        },
+        {
+          id: 2,
+          nome: "Cainã 2",
+          email: "c2costa@gmail.com",
+          idade: 32
+        }
+      ]
+    }
+  },
+
   components: {
-    Cliente,
-    Produto
+    Cliente
+  },
+
+  methods: {
+    cadastrarUsuario: function() {
+
+      if(this.nomeField == "" || this.nomeField.length < 3) {
+        this.erroValidacao = true;
+        // console.log("Erro de validação.");
+      } else {
+        this.erroValidacao = false;
+        this.clientes.push({nome: this.nomeField, email: this.emailField, idade: this.idadeField, id: Date.now()})  
+      }
+      
+      this.nomeField = "";
+      this.emailField = "";
+      this.idadeField = "";
+    },
+    
+    deletarUsuario: function($event) {
+      var id = $event.idCliente;
+
+      // remover elemento do arrray pelo id
+      // var novoArray = this.clientes.filter(cliente => cliente.id != id);
+      // this.clientes = novoArray;
+      this.clientes = this.clientes.filter(cliente => cliente.id != id);
+
+    }
   }
 }
 </script>
@@ -26,5 +98,9 @@ export default {
   h1 {
     height: 30px;
     color: crimson;
+  }
+
+  #nomeErro {
+    color: red;
   }
 </style>
