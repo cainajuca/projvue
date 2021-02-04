@@ -1,8 +1,6 @@
 // para botar o servidor online: yarn run serve
-// video-aulas em
 // Curso de Vue JS
-// Victor Lima - Guia do Programador
-// Cainã Jucá aqui
+// Cainã da Costa Jucá
 
 <template>
   <div id="app">
