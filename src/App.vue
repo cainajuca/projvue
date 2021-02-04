@@ -2,7 +2,7 @@
 // video-aulas em
 // Curso de Vue JS
 // Victor Lima - Guia do Programador
-// Cainã Jucá aqui
+// Cainã Jucá
 
 <template>
   <div id="app">
